@@ -2,18 +2,17 @@ import pandas as pd
 import json
 from pathlib import Path
 
-DATA_DIR = Path(__file__).parent.parent / "data"
+DATA_DIR = Path(__file__).parent / "data"
 
-def get_cat_map(cat_path=DATA_DIR / "US_category_id.json"):
+def get_cat_map(cat_path):
     """Return a dictionary mapping category_id → category name"""
     with open(cat_path) as f:
         cat_dict = json.load(f)['items']
     return {int(item['id']): item['snippet']['title'] for item in cat_dict}
 
-
-def load_and_clean(csv_path=DATA_DIR / "USvideos.csv", cat_path=DATA_DIR / "US_category_id.json"):
+def load_and_clean(csv_path, cat_path, country=None, encoding='utf-8'):
     """Load the CSV and JSON, clean data, and return a ready-to-use DataFrame"""
-    df = pd.read_csv(csv_path)
+    df = pd.read_csv(csv_path, encoding=encoding)
     
     # Convert date columns to datetime
     df['publish_time'] = pd.to_datetime(df['publish_time'])
@@ -37,4 +36,16 @@ def load_and_clean(csv_path=DATA_DIR / "USvideos.csv", cat_path=DATA_DIR / "US_c
     df = df.sort_values('trending_date', ascending=False) \
            .drop_duplicates(subset='video_id', keep='first')
     
+    if country:
+        df['country'] = country
+
     return df
+
+
+def load_country(country_code: str, encoding=None):
+    return load_and_clean(
+        csv_path=DATA_DIR / f"{country_code}videos.csv",
+        cat_path=DATA_DIR / f"{country_code}_category_id.json",
+        country=country_code,
+        encoding=encoding
+    )
