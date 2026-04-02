@@ -68,11 +68,14 @@ Compared performance across:
 ---
 
 ## Visualizations
-The project includes:
-- Category vs engagement comparisons (US vs Japan)  
-- Engagement by publish hour  
-- Views distribution (log-scaled)  
-- Views vs engagement scatter plots  
+
+![Video count by category](images/video-count-by-category.png)
+![Views distribution](images/views-distribution.png)
+![Likes distribution](images/likes-distribution.png)
+![Views vs likes](images/views-vs-likes.png)
+![Category vs engagement comparisons](images/engagement-by-publish-hour.png)
+![Average engagement rate by category](images/avg-engagement-rate.png)
+
 
 ---
 
